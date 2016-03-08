@@ -6,19 +6,25 @@ import com.coolweather.app.util.HttpUtil;
 import com.coolweather.app.util.Parse;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class WeatherActivity extends Activity{
+public class WeatherActivity extends Activity implements OnClickListener{
 	
 	private TextView cityName, publishText, weatherDesp, temp1, temp2,currentData;
 	private LinearLayout weatherInfo;
+	private Button switchCity,refresh;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,6 +38,10 @@ public class WeatherActivity extends Activity{
 		temp2 = (TextView)findViewById(R.id.temp2);
 		currentData = (TextView)findViewById(R.id.current_data);
 		weatherInfo = (LinearLayout)findViewById(R.id.weather_info_layout);
+		refresh = (Button)findViewById(R.id.refresh_weather);
+		switchCity = (Button)findViewById(R.id.switch_city);
+		refresh.setOnClickListener(this);
+		switchCity.setOnClickListener(this);
 		
 		String countyCode = getIntent().getStringExtra("countyCode");
 		if(TextUtils.isEmpty(countyCode)) {
@@ -115,4 +125,31 @@ public class WeatherActivity extends Activity{
 		weatherInfo.setVisibility(View.VISIBLE);
 		cityName.setVisibility(View.VISIBLE);
 	}
+
+	@Override
+	public void onClick(View view) {
+		switch (view.getId()) {
+		case R.id.switch_city:
+			Intent intent = new Intent(this, ChooseAreaActivity.class);
+			intent.putExtra("form_switch_city", true);
+			startActivity(intent);
+			finish();
+			break;
+		case R.id.refresh_weather:
+			publishText.setText("同步中");
+			SharedPreferences spf = PreferenceManager.getDefaultSharedPreferences(this);
+			String weatherCode = spf.getString("weather_code", "");
+			if(!TextUtils.isEmpty(weatherCode)) {
+				queryWeatherInfo(weatherCode);
+				Log.w("WeatherActivity", "更新天气");
+			}
+			
+			break;
+
+		default:
+			break;
+		}
+	}
+
+
 }

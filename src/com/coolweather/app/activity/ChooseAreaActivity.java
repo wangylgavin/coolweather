@@ -19,7 +19,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -68,16 +67,19 @@ public class ChooseAreaActivity extends Activity{
 	private int currentLevel;
 	
 	ArrayAdapter<String> adapter;
+	private boolean isFromWeather;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		SharedPreferences spf = PreferenceManager.getDefaultSharedPreferences(this);
-		if(spf.getBoolean("city_selected", false)) {
+		isFromWeather = getIntent().getBooleanExtra("form_switch_city", false);
+		if (spf.getBoolean("city_selected", false) && !isFromWeather) {
 			Intent intent = new Intent(ChooseAreaActivity.this, WeatherActivity.class);
 			startActivity(intent);
 			finish();
 			return;
+
 		}
 		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -266,6 +268,10 @@ public class ChooseAreaActivity extends Activity{
 		}else if(currentLevel == LEVEL_CITY) {
 			queryProvinces();
 		}else{
+			if(isFromWeather) {
+				Intent intent = new Intent(this, WeatherActivity.class);
+				startActivity(intent);
+			}
 			finish();
 		}
 	}
