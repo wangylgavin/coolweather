@@ -37,27 +37,27 @@ public class ChooseAreaActivity extends Activity{
 	private TextView textView;
 	
 	/**
-	 * ´æ·ÅlistView¿Ø¼şÖĞÒªÏÔÊ¾µÄÊı¾İ
+	 * listViewä¸­çš„æ•°æ®
 	 */
 	private List<String> dataList;
 	
 	/**
-	 * Ê¡ÁĞ±í
+	 * çœåˆ—è¡¨
 	 */
 	private List<Province> provinceList;
 	
 	/**
-	 * ÊĞÁĞ±í
+	 * å¸‚åˆ—è¡¨
 	 */
 	private List<City> cityList;
 	
 	/**
-	 * ÏØÁĞ±í
+	 * å¿åˆ—è¡¨
 	 */
 	private List<County> countyList;
 	
 	/**
-	 * Êı¾İ¿â²Ù×÷Àà
+	 * æ•°æ®åº“æ“ä½œ
 	 */
 	private CoolWeatherDB db;
 	private ProgressDialog progressDialog;
@@ -115,24 +115,22 @@ public class ChooseAreaActivity extends Activity{
 		});
 		queryProvinces();
 	}
-/*******************************************************************
- * ´ÓÊı¾İ¿â»ò·şÎñÆ÷ÉÏ¼ÓÔØÊ¡ÊĞÏØÊı¾İ
- */
+
 	
 	
 	/**
-	 * ²éÑ¯È«¹úËùÓĞÊ¡£¬ÓÅÏÈ´ÓÊı¾İ¿â²éÑ¯
+	 * åŠ è½½çœçº§æ•°æ®
 	 */
 	private void queryProvinces() {
 		provinceList = db.loadProvinces();
 		if(!provinceList.isEmpty()) {
-			dataList.clear();  //²»ÄÜÉÙ
+			dataList.clear();  //ä¸èƒ½å°‘
 			for(Province p : provinceList) {
 				dataList.add(p.getProvinceName());
 			}
 			adapter.notifyDataSetChanged();
 			listView.setSelection(0);
-			textView.setText("ÖĞ¹ú");
+			textView.setText("ï¿½Ğ¹ï¿½");
 			currentLevel = LEVEL_PROVINCE;
 		}else {
 			queryFromServer(null, "province");
@@ -141,14 +139,14 @@ public class ChooseAreaActivity extends Activity{
 	
 	
 	/**
-	 * ²éÑ¯Ä³Ê¡µÄËùÓĞÊĞ£¬ÓÅÏÈ´ÓÊı¾İ¿â²éÑ¯
+	 * åŠ è½½å¸‚çº§æ•°æ®
 	 */
 	private void queryCities() {
 		
 		cityList = db.loadCities(selectedProvince.getId());
 		if(!cityList.isEmpty()) {
 			
-			dataList.clear();  //²»ÄÜÉÙ
+			dataList.clear();  
 			for(City c : cityList) {
 				dataList.add(c.getCityName());
 			}
@@ -162,14 +160,14 @@ public class ChooseAreaActivity extends Activity{
 	}
 	
 	/**
-	 * ²éÑ¯Ä³ÊĞµÄËùÓĞÏØ£¬ÓÅÏÈ´ÓÊı¾İ¿â²éÑ¯
+	 * åŠ è½½å¿çº§æ•°æ®
 	 */
 	private void queryCounties() {
 		
 		countyList = db.loadCounties(selectedCity.getId());
 		if(!countyList.isEmpty()) {
 			
-			dataList.clear();  //²»ÄÜÉÙ
+			dataList.clear();  
 			for(County c : countyList) {
 				dataList.add(c.getCountyName());
 			}
@@ -182,8 +180,8 @@ public class ChooseAreaActivity extends Activity{
 		}
 	}
 	
-	/*
-	 * ´Ó·şÎñÆ÷²éÑ¯Ê¡ÊĞÏØÊı¾İ
+	/**
+	 * ä»æœåŠ¡å™¨æŸ¥è¯¢çœå¸‚å¿æ•°æ®
 	 */
 	private void queryFromServer(final String code, final String type) {
 		String address;
@@ -232,7 +230,7 @@ public class ChooseAreaActivity extends Activity{
 					public void run() {
 						closeProgressDialog();
 						Toast.makeText(ChooseAreaActivity.this,
-								"¼ÓÔØÊ§°Ü", Toast.LENGTH_LONG).show();
+								"åŠ è½½å¤±è´¥", Toast.LENGTH_LONG).show();
 					}
 				});
 			}
@@ -240,7 +238,7 @@ public class ChooseAreaActivity extends Activity{
 	}
 	
 	/**
-	 * ÏÔÊ¾ÕıÔÚÏÂÔØ
+	 * æ˜¾ç¤ºè¿›åº¦
 	 */
 	private void showProgressDialog() {
 		if(progressDialog == null) {
@@ -259,7 +257,7 @@ public class ChooseAreaActivity extends Activity{
 	}
 
 	/**
-	 * back°´¼ü,£¨Ò»¸öactivity£©
+	 * backå»ºçš„åŠŸèƒ½
 	 */
 	@Override
 	public void onBackPressed() {

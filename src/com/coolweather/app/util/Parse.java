@@ -16,16 +16,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 
 public class Parse {
 
-/***************************************************************
- ********** *************½âÎöÊ¡£¬ÊĞ£¬ÏØÊı¾İ***************************
- */
 	
 	/**
-	 * ½âÎöºÍ´¦Àí·şÎñÆ÷·µ»ØµÄÊ¡¼¶Êı¾İ
+	 * è§£æå¹¶å­˜å‚¨çœä¿¡æ¯
 	 */
 	
 	public static boolean parseProvinceResponse(CoolWeatherDB db, String response) {
@@ -46,7 +42,7 @@ public class Parse {
 	}
 	
 	/**
-	 * ½âÎöºÍ´¦Àí·şÎñÆ÷·µ»ØµÄÊĞ¼¶Êı¾İ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½Ğ¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public static boolean parseCityResponse(CoolWeatherDB db, String response, int provinceId) {
 		if(!TextUtils.isEmpty(response)) {
@@ -67,7 +63,7 @@ public class Parse {
 	}
 	
 	/**
-	 * ½âÎöºÍ´¦Àí·şÎñÆ÷·µ»ØµÄÏØ¼¶Êı¾İ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public static boolean parseCountyResponse(CoolWeatherDB db, String response, int cityId) {
 		if(!TextUtils.isEmpty(response)) {
@@ -88,10 +84,10 @@ public class Parse {
 	}
 	
 /*************************************************************************
- *************************json½âÎö***************************************
+ *************************jsonè§£æ***************************************
  */
 	/**
-	 * ½âÎö´¦ÀíÆ÷·µ»ØµÄjsonÊı¾İ£¬²¢´æ´¢µ½±¾µØ
+	 * è§£ææœåŠ¡å™¨è¿”å›çš„jsonæ•°æ®
 	 */
 	public static void parseWeatherInfoJson(Context context, String response) {
 		try {
@@ -110,11 +106,11 @@ public class Parse {
 	}
 	
 	/**
-	 * ½«ÌìÆøĞÅÏ¢´æ´¢µ½±¾µØ
+	 * å­˜å‚¨å¤©æ°”ä¿¡æ¯
 	 */
 	private static void saveWeatherInfo(Context context, String cityName, String weatherCode, String temp1, String temp2,
 			String weatherDesp, String ptime) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyÄêMÔÂdÈÕ", Locale.CHINA);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyå¹´Mæœˆdæ—¥", Locale.CHINA);
 		SharedPreferences.Editor editor =  PreferenceManager.getDefaultSharedPreferences(context).edit();
 		editor.putString("city_name", cityName);
 		editor.putBoolean("city_selected", true);

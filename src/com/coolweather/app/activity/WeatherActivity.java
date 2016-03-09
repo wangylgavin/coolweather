@@ -1,6 +1,7 @@
 package com.coolweather.app.activity;
 
 import com.coolweather.app.R;
+import com.coolweather.app.service.AutoUpdateService;
 import com.coolweather.app.util.HttpCallbackListener;
 import com.coolweather.app.util.HttpUtil;
 import com.coolweather.app.util.Parse;
@@ -11,7 +12,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -47,7 +47,7 @@ public class WeatherActivity extends Activity implements OnClickListener{
 		if(TextUtils.isEmpty(countyCode)) {
 			showWeather();
 		}else{
-			publishText.setText("Í¬²½ÖĞ");
+			publishText.setText("Í¬åŒæ­¥ä¸­");
 			weatherInfo.setVisibility(View.INVISIBLE);
 			cityName.setVisibility(View.INVISIBLE);
 			queryWeatherCode(countyCode);
@@ -55,7 +55,7 @@ public class WeatherActivity extends Activity implements OnClickListener{
 	}
 	
 	/**
-	 * ¸ù¾İÌìÆø´úºÅ£¬²éÑ¯ÌìÆø
+	 * æ ¹æ®å¤©æ°”ä»£å·æŸ¥è¯¢å¤©æ°”
 	 * @param countyCode
 	 */
 	private void queryWeatherInfo(String weatherCode) {
@@ -64,7 +64,7 @@ public class WeatherActivity extends Activity implements OnClickListener{
 	}
 	
 	/**
-	 * ¸ù¾İ³ÇÊĞ´úºÅ£¬²éÑ¯ÌìÆø´úºÅ
+	 * æ ¹æ®åŸå¸‚ä»£å·æŸ¥è¯¢å¤©æ°”ä»£å·
 	 * @param countyCode
 	 */
 	private void queryWeatherCode(String countyCode) {
@@ -73,7 +73,7 @@ public class WeatherActivity extends Activity implements OnClickListener{
 	}
 	
 	/**
-	 * ¸ù¾İÀàĞÍÈ¥·şÎñÆ÷²éÑ¯ÌìÆø´úºÅ»òĞÅÏ¢
+	 * ä»æœåŠ¡å™¨æŸ¥è¯¢å¤©æ°”ä»£å·æˆ–å¤©æ°”ä¿¡æ¯
 	 * @param address
 	 * @param string
 	 */
@@ -104,7 +104,7 @@ public class WeatherActivity extends Activity implements OnClickListener{
 					
 					@Override
 					public void run() {
-						publishText.setText("Í¬²½Ê§°Ü");
+						publishText.setText("Í¬ï¿½ï¿½Ê§ï¿½ï¿½");
 					}
 				});
 			}
@@ -112,18 +112,21 @@ public class WeatherActivity extends Activity implements OnClickListener{
 	}
 
 	/**
-	 * ´ÓSharedPreferencesÎÄ¼şÖĞ¶ÁÈ¡ĞÅÏ¢£¬ÏÔÊ¾±¾µØÌìÆø
+	 * è¯»å–SharedPreferencesæ–‡ä»¶ä¸­çš„å¤©æ°”ä¿¡æ¯
 	 */
 	private void showWeather() {
 		SharedPreferences spf = PreferenceManager.getDefaultSharedPreferences(this);
 		cityName.setText(spf.getString("city_name", ""));
-		publishText.setText("½ñÌì" + spf.getString("ptime", "") + "·¢²¼");
+		publishText.setText("ä»Šå¤©" + spf.getString("ptime", "") + "å‘å¸ƒ");
 		weatherDesp.setText(spf.getString("weatherDesp", ""));
 		temp1.setText(spf.getString("temp1", ""));
 		temp2.setText(spf.getString("temp2", ""));
 		currentData.setText(spf.getString("current_data", ""));
 		weatherInfo.setVisibility(View.VISIBLE);
 		cityName.setVisibility(View.VISIBLE);
+		
+		Intent intent = new Intent(this, AutoUpdateService.class);
+		startService(intent);
 	}
 
 	@Override
@@ -136,12 +139,11 @@ public class WeatherActivity extends Activity implements OnClickListener{
 			finish();
 			break;
 		case R.id.refresh_weather:
-			publishText.setText("Í¬²½ÖĞ");
+			publishText.setText("Í¬æ›´æ–°å¤©æ°”");
 			SharedPreferences spf = PreferenceManager.getDefaultSharedPreferences(this);
 			String weatherCode = spf.getString("weather_code", "");
 			if(!TextUtils.isEmpty(weatherCode)) {
 				queryWeatherInfo(weatherCode);
-				Log.w("WeatherActivity", "¸üĞÂÌìÆø");
 			}
 			
 			break;
