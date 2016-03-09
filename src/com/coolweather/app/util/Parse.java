@@ -4,13 +4,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.alibaba.fastjson.JSON;
 import com.coolweather.app.db.CoolWeatherDB;
 import com.coolweather.app.model.City;
 import com.coolweather.app.model.County;
 import com.coolweather.app.model.Province;
+import com.coolweather.app.model.Weather;
+import com.coolweather.app.model.WeatherInfo;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -87,22 +87,15 @@ public class Parse {
  *************************json解析***************************************
  */
 	/**
-	 * 解析服务器返回的json数据
+	 * 使用fastjson解析服务器返回的json数据
 	 */
 	public static void parseWeatherInfoJson(Context context, String response) {
-		try {
-			JSONObject jsonObject = new JSONObject(response);
-			JSONObject weatherInfo = jsonObject.getJSONObject("weatherinfo");
-			String cityName = weatherInfo.getString("city");
-			String weatherCode = weatherInfo.getString("cityid");
-			String temp1 = weatherInfo.getString("temp1");
-			String temp2 = weatherInfo.getString("temp2");
-			String weatherDesp = weatherInfo.getString("weather");
-			String ptime = weatherInfo.getString("ptime");
-			saveWeatherInfo(context,cityName,weatherCode,temp1,temp2,weatherDesp,ptime);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+
+		Weather weather = JSON.parseObject(response, Weather.class);
+		WeatherInfo wif = weather.getWeatherInfo();
+		saveWeatherInfo(context, wif.getCity(), wif.getCityId(), wif.getTemp1(), wif.getTemp2(), wif.getWeather(),
+				wif.getPtime());
+
 	}
 	
 	/**
